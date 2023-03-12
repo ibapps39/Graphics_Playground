@@ -1,0 +1,29 @@
+#include "../include/triangle_opengl.h"
+
+#define SCREEN_WIDTH  640
+#define SCREEN_HEIGHT 640
+
+int main(int argc, char* args[]) {
+
+  SDL_Init(SDL_INIT_VIDEO);
+  
+  SDL_Window *window = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
+  SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
+
+  SDL_GLContext context = SDL_GL_CreateContext(window);
+
+  glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+  glBegin(GL_TRIANGLES); //Vertices (-1,-1)(0,1)(1,1)
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex2f(-1.0f, -1.0f);
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex2f(0.0f, 1.0f);
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex2f(1.0f, 1.0f);
+  glEnd();
+
+  SDL_GL_SwapWindow(window);
+  return 0;
+}
+

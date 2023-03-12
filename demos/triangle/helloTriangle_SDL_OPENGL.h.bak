@@ -1,0 +1,50 @@
+#pragma once
+#include <stdio.h>
+#include <stdlib.h>
+#include <memory.h>
+#include <time.h>
+
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_opengl.h"
+
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 640
+
+#define TITLE "Hello Triangle!"
+/*
+glOrtho(left, right, bottom, top, near, far):
+Why bottom>top? why is top = 0 and bottom = SCR_H?
+OGL y-axis points upwards, with positive y-coordinates increasing in the upward direction. 
+This is the opposite of the coordinate system used by many graphics libraries and windowing systems, 
+where the y-axis points downwards. 
+Therefore, to make the triangle appear in the correct orientation on 
+the screen, we need to set bottom to the height of the viewport 
+ and top to 0
+
+ OpenGL coordinates start from the bottom left corner of the window. 
+ So by flipping, you get a more conventional (0,0) 
+ starting at the top left corner of the window rather.
+
+*/
+#define ORTHO_LEFT 0
+#define ORTHO_RIGHT SCREEN_WIDTH
+#define ORTHO_BOTTOM SCREEN_HEIGHT
+#define ORTHO_TOP 0
+#define ORTHO_NEAR -1
+#define ORTHO_FAR 1
+
+//2 to 4
+#define VERTEX_DIM 3
+#define VERTICES 3
+//3 to 4
+#define COLOR_COMPONENTS 3
+#define COLORS 3
+
+// Set up the triangle
+extern GLfloat vertices[];
+
+// Set up the colors
+extern GLfloat colors[];
+
+SDL_Event event;
+

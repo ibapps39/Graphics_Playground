@@ -1,0 +1,90 @@
+#include "../include/triangle_mac_opengl.h"
+
+#define SCREEN_WIDTH  640
+#define SCREEN_HEIGHT 640
+#define nVAOs  1
+
+GLuint renderingProg;
+GLuint vao[nVAOs];
+
+GLuint createShader(){
+  const char* vshaderSrc;
+  const char* fshaderSrc;
+  GLuint vShader, fShader, vfProg;
+  GLuint test = 0;
+  
+  vshaderSrc = 
+  "#version 410\n"
+  "in vec4 vPosition;"
+  "in vec4 vColor;"
+  "out vec4 fColor;"
+  "void main(){"
+  "gl_Position = vPosition"
+  "fColor = vColor;"
+  "}";
+
+  fshaderSrc = 
+  "#version 410\n"
+  "in vec4 fColor;"
+  "out vec4 fragColor;"
+  "int main(){"
+  "fragColor = fColor;"
+  "}";
+
+  vShader = glCreateShader(GL_VERTEX_SHADER);
+  fShader = glCreateShader(GL_FRAGMENT_SHADER);
+  vfProg = glCreateProgram();
+  return test;
+}
+
+int main(int argc, char* args[]) {
+
+  //SDL_Init(SDL_INIT_VIDEO);
+  glfwInit();
+  createShader();
+  /*SDL_Window *window = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
+  SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);*/
+  GLFWwindow *window;
+  window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "GLFW window", NULL, NULL);
+  if (!window) {glfwTerminate(); return 1;}
+  
+  //SDL_GLContext context = SDL_GL_CreateContext(window);
+  glfwMakeContextCurrent(window);
+
+  while (!glfwWindowShouldClose(window)) {
+    //render black screen
+    //glClear(GL_COLOR_BUFFER_BIT);
+
+    //render 
+    float timevalue = glfwGetTime();
+    float greenVal = sin(timevalue) / 2.0f + 0.5f;
+    glClearColor(0.0f, greenVal, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    //swap buffers
+    glfwSwapBuffers(window);
+    //listen for OpenGL events
+    glfwPollEvents();
+    //close the window if esc is pressed
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+      glfwWindowShouldClose(window);
+    }
+  }
+
+  glfwTerminate();
+
+  // glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+  // glBegin(GL_TRIANGLES); //Vertices (-1,-1)(0,1)(1,1)
+  //   glColor3f(0.0f, 0.0f, 1.0f);
+  //   glVertex2f(-1.0f, -1.0f);
+  //   glColor3f(0.0f, 0.0f, 1.0f);
+  //   glVertex2f(0.0f, 1.0f);
+  //   glColor3f(0.0f, 0.0f, 1.0f);
+  //   glVertex2f(1.0f, 1.0f);
+  // glEnd();
+
+  // SDL_GL_SwapWindow(window);
+
+  return 0;
+}

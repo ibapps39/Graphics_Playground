@@ -1,0 +1,101 @@
+#include "../include/helloTriangle.h"
+
+/*
+Init SDL - Main
+Create Window - Func
+Set OpenGL Context - Func
+Setup OGL - Main 
+Triangle props, colors - def. in header
+Render - Func
+Swap Buffer - Main
+Listen for keys - Func
+CleanUp - Func, Main
+*/
+
+
+//Init SDL, window, set OGL.Env, 
+int main(int argc, char **argv) {
+    SDL_Init(SDL_INIT_VIDEO);
+
+    SDL_Window* window = SDL_CreateWindow(
+        TITLE,
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        SCREEN_WIDTH,
+        SCREEN_HEIGHT,
+        SDL_WINDOW_OPENGL);
+    
+    SDL_GLContext context = SDL_GL_CreateContext(window);
+    
+    //Setup OpenGL
+    //Create a Rect. Viewport with the following dimensions
+    glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    /*
+    matrix ops affect the proj. matrix
+    then glLoadIdentity() will reset the proj.matrix to the id.matrix
+    */
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    /*
+    Projection matrix,
+    Ortho.Proj.Matrix = Matrix that perserves distances between objects
+    regardless of their distance from the camera
+    */
+    glOrtho(
+        ORTHO_LEFT, 
+        ORTHO_RIGHT, 
+        ORTHO_BOTTOM, 
+        ORTHO_TOP,
+        ORTHO_NEAR,
+        ORTHO_FAR);
+    //Ops on ModelView(MV) matrix, then reset MV matrix
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    //Define Triangle
+    //Triangle = 3 vertices. Also works with vertices[] =...
+    GLfloat vertices[VERTEX_DIM * VERTICES] = {
+        320.0f, 50.0f, 0.0f,
+        50.0f, 430.0f, 0.0f,
+        590.0f, 430.0f, 0.0f
+    };
+    //Define Colors, colors[] = ...
+    GLfloat colors[COLOR_COMPONENTS * COLORS] = {
+        1.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 1.0f
+    };
+
+    //Render
+    glClear(GL_COLOR_BUFFER_BIT);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
+    // stride of 0 = tight pack
+    glVertexPointer(VERTICES, GL_FLOAT, 0, vertices);
+    //GL_FLOAT, not GL_COLOR!!!
+    glColorPointer(COLORS, GL_FLOAT, 0, colors);
+    //mode, index to start, num of vertices to render
+    glDrawArrays(GL_TRIANGLES, 0, VERTICES);
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
+
+    //swap buffers
+    SDL_GL_SwapWindow(window);
+    
+
+    while(1) {
+        if(SDL_PollEvent(&event) && event.type == SDL_QUIT) {
+            break;
+        }
+        if(SDL_PollEvent(&event) && event.type == SDL_KEYDOWN) {
+            break;
+        }
+    }
+
+    //Clean
+    SDL_GL_DeleteContext(context);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+    
+    return 0;
+}

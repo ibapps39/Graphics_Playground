@@ -1,0 +1,69 @@
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_opengl.h"
+
+int main(int argc, char* argv[])
+{
+    // Initialize SDL
+    SDL_Init(SDL_INIT_VIDEO);
+
+    // Create a window
+    SDL_Window* window = SDL_CreateWindow("OpenGL Triangle",
+                                          SDL_WINDOWPOS_CENTERED,
+                                          SDL_WINDOWPOS_CENTERED,
+                                          640, 480,
+                                          SDL_WINDOW_OPENGL);
+
+    // Create an OpenGL context
+    SDL_GLContext context = SDL_GL_CreateContext(window);
+
+    // Set up OpenGL
+    glViewport(0, 0, 640, 480);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0, 640, 480, 0, -1, 1);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    // Set up the triangle
+    GLfloat vertices[] = {
+        320.0f, 50.0f, 0.0f,
+        50.0f, 430.0f, 0.0f,
+        590.0f, 430.0f, 0.0f
+    };
+
+    // Set up the colors
+    GLfloat colors[] = {
+        1.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 1.0f
+    };
+
+    // Render the triangle
+    glClear(GL_COLOR_BUFFER_BIT);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 0, vertices);
+    glColorPointer(3, GL_FLOAT, 0, colors);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
+
+    // Swap buffers
+    SDL_GL_SwapWindow(window);
+
+    // Wait for a keypress
+    SDL_Event event;
+    while (1) {
+        if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
+            break;
+        if (SDL_PollEvent(&event) && event.type == SDL_KEYDOWN)
+            break;
+    }
+
+    // Clean up
+    SDL_GL_DeleteContext(context);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+    return 0;
+}

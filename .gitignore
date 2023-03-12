@@ -1,0 +1,52 @@
+# Object files
+*.o
+*.obj
+
+# Binary files
+*.out
+*.exe
+*.app
+
+# Debug files
+*.dSYM
+*.debug
+
+# Compiler files
+*.swp
+*.sass-cache
+
+# Generated files
+*.generated.*
+
+# Build artifacts
+build/
+dist/
+
+# Other file types
+*.log
+*.csv
+*.dat
+
+# IDE files
+*.proj
+*.sln
+*.vcxproj
+*.user
+*.suo
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Package manager files
+node_modules/
+yarn-error.log
+.yarn-cache/
+.cache/
+.npm/
+.lock-wscript/
+.wafpickle-*
+
+SDL2.2.26.2.framework/
+.vscode/
