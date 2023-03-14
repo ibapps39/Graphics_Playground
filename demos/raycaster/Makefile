@@ -1,11 +1,13 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -pedantic -std=c99
-LDFLAGS=-L/opt/homebrew/opt/sdl2/lib
-LDLIBS=-lm -lpthread -lSDL2 -framework OpenGL
-INCLUDE_PATHS = -I/opt/homebrew/opt/sdl2/include
+LDFLAGS=-L/opt/homebrew/lib
+LDLIBS=-lm -lpthread -lglfw -lGLU -framework OpenGL
+
+INCLUDE_PATHS = -I/opt/homebrew/include
 
 CFLAGS += $(INCLUDE_PATHS)
 LDFLAGS += $(LDLIBS)
+
 SRC=$(wildcard *.c)
 OBJ=$(patsubst %.c,%.o,$(SRC))
 BIN=raycaster
