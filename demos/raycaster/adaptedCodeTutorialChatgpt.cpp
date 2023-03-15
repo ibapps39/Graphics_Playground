@@ -5,9 +5,14 @@ Replace #include <GL/glut.h> with #include <GLFW/glfw3.h>.
 Replace glutInit(&argc, argv); with glfwInit();.
 Replace glutCreateWindow("Raycaster"); with glfwCreateWindow(1024, 512, "Raycaster", NULL, NULL);. The first two parameters specify the size of the window, while the last two are for monitor and share resources contexts, respectively. We set them to NULL for now.
 Replace glutDisplayFunc(display); with glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); glfwSetKeyCallback(window, key_callback); and remove the display function. The framebuffer_size_callback is called when the window is resized, and the key_callback is called when a key is pressed.
-Replace glutMainLoop(); with while (!glfwWindowShouldClose(window)) { glfwSwapBuffers(window); glfwPollEvents(); }. This loop keeps the window open until the user closes it.
-In the framebuffer_size_callback, add the following line to set the viewport: glViewport(0, 0, width, height);. This ensures that the OpenGL rendering is done in the entire window.
+Replace glutMainLoop(); with while (!glfwWindowShouldClose(window)) 
+{ glfwSwapBuffers(window); glfwPollEvents(); }. 
+This loop keeps the window open until the user closes it.
+In the framebuffer_size_callback, add the following line to set the viewport: 
+glViewport(0, 0, width, height);. This ensures that the OpenGL rendering is done in the entire window.
 */
+
+
 //OG Code
 /*//------------------------YouTube-3DSage----------------------------------------
 //Full video: https://www.youtube.com/watch?v=gYRrGTC7GtA 
