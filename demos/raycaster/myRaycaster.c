@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include "myRaycaster.h"
 
+
+//work in progress!
+
 //-----------------------------MAP----------------------------------------------
 #define mapX  8      //map width
 #define mapY  8      //map height
