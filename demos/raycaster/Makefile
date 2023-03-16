@@ -1,7 +1,11 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -pedantic -std=c99
+CFLAGS=-Wall -Wextra -pedantic -std=c17 
 LDFLAGS=-L/opt/homebrew/lib
-LDLIBS=-lm -lpthread -lglfw -lGLU -framework OpenGL
+LDLIBS=-lm -lpthread -lglfw -framework OpenGL
+
+ifdef USE_GLU
+LIBS += -lGLU
+endif
 
 INCLUDE_PATHS = -I/opt/homebrew/include
 
