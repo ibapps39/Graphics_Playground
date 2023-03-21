@@ -113,56 +113,63 @@ void init()
 
 void drawRays()
 {
-    float rayLength, rayHeight, rayAngle, offsetLength, offsetHeight;
-    int ray, mapPosX, mapPosY, currDepthofField, mapIndex;
+    int mapTileX, mapTileY, mapIndex, depthOfField;
+    float rayAngle, rayLengthX, rayHeightY, offsetX, offsetY;
     rayAngle = playerAngle;
-    
-    for(ray = 0; ray < 1; ray++)
-    {
-        currDepthofField = 0;
-        float aTan = -1/tan(rayAngle);
-        if(rayAngle > M_PI)
-        {
-            rayHeight = ( ( (int)playerY)<<6<<6) - RAY_ACCURACY_ERROR;
-            rayLength = (playerY-rayHeight)*aTan+playerX;
-            offsetHeight = -64;
-            offsetLength = -offsetHeight*aTan;
-        }
-        if(rayAngle < M_PI)
-        {
-            rayHeight = ( ( (int)playerY)<<6<<6) + 64;
-            rayLength = (playerY-rayHeight)*aTan+playerX;
-            offsetHeight = 64;
-            offsetLength = -offsetHeight*aTan;
-        }
-        if(rayAngle == 0 || rayAngle == M_PI)
-        {
-            rayHeight = playerY;
-            rayLength = playerX;
-            currDepthofField = 8;
-        }
 
-        while(currDepthofField < 8) {
-            mapPosX     = ((int)rayLength)>>6;
-            mapPosY     = ((int)rayHeight)>>6;
-            mapIndex    = mapPosY*MAP_LENGTH+mapPosX;
-            //if the current mapIndex is within the map and theres a 1 there, it means a wall 
-            if(mapIndex<MAP_AREA && map[mapIndex]==1){break;}/*currDepthofField = 8;*/
-            else
-            {
-                rayLength+=offsetLength;
-                rayHeight+=offsetHeight;
-                currDepthofField+=1;
-            }
-            glColor3f(0,1,0);
-            glLineWidth(1);
-            glBegin(GL_LINES);
-                glVertex2i(playerX, playerY);
-                glVertex2i(rayLength, rayHeight);
-            glEnd();
+    depthOfField = 0;
+    float slope = -1/tan(rayAngle);
+    // Check the horizontal lines, up/down
+    // If the player is looking up
+    if (rayAngle > M_PI)
+    {
+        rayHeightY = (((int)playerY >> 6) << 6) - RAY_ACCURACY_ERROR;
+        rayLengthX = (playerY-rayHeightY)*slope+playerX;
+        offsetY = -MAP_AREA;
+        offsetX = -offsetY*slope;
+    }
+    // If the player is looking down
+    // If the player is looking down
+    if (rayAngle < M_PI)
+    {
+        rayHeightY = (((int)playerY >> 6) << 6) + MAP_AREA;
+        rayLengthX = (playerY-rayHeightY)*slope+playerX;
+        offsetY = 64;
+        offsetX = -offsetY*slope;
+    }
+    if (rayAngle == M_PI || rayAngle == 0)
+    {
+        rayHeightY = playerY;
+        rayLengthX = playerX;
+        depthOfField = 8;
+    }
+
+    while (depthOfField < 8)
+    {
+        mapTileX = (int)(rayLengthX) >> 6;
+        mapTileY = (int)(rayHeightY) >> 6;
+        mapIndex = mapTileY*MAP_AREA+mapTileX;
+        if (mapIndex < MAP_SIZE && map[mapIndex] == 1)
+        {
+            depthOfField = 8;
+        }
+        else
+        {
+            rayLengthX += offsetX;
+            rayHeightY += offsetY;
+            depthOfField += 1;
         }
     }
+
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glLineWidth(1.0f);
+    glBegin(GL_LINES);
+        glVertex2i(playerX, playerY);
+        glVertex2i(rayLengthX, rayHeightY);
+    glEnd();
 }
+
+
 //What to render
 //background, map, player, and then swap buffers
 void display(GLFWwindow* window)
