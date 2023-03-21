@@ -15,43 +15,35 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <math.h>
+
+
+int map[] = {
+    1,1,1,1,1,1,1,1,
+    1,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,1,
+    1,1,1,1,1,1,1,1
+};
 
 
 // Define constants for screen width and height
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 600
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 512
 #define SCREEN_TITLE "SCREEN_TITLE"
 #define ASPECT (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT
 
-#define MAP_LENGTH 10
-#define MAP_HEIGHT 10
+#define MAP_LENGTH 8
+#define MAP_HEIGHT 8
+#define MAP_AREA MAP_LENGTH*MAP_HEIGHT
+#define MAP_SIZE sizeof(map)/sizeof(map[0])
+#define PLAYER_DIRECTIONAL_ANGLE_SCALER 5
+#define RAY_ACCURACY_ERROR 0.0001
 
 
-int map[MAP_LENGTH][MAP_LENGTH] = {
-    {0,0,0,0,0,0,0,0,0, 0},
-    {0,0,0,0,0,0,0,0,0, 0},
-    {0,0,0,0,0,0,0,0,0, 0},
-    {0,0,0,0,0,0,0,0,0, 0},
-    {0,0,0,0,0,0,0,0,0, 0},
-    {0,0,0,0,0,0,0,0,0, 0},
-    {0,0,0,0,0,0,0,0,0, 0},
-    {0,0,0,0,0,0,0,0,0, 0},
-    {0,0,0,0,0,0,0,0,0, 0},
-    {0,0,0,0,0,0,0,0,0, 0}
-};
-// Define a struct to represent the player's position and direction
-
-// Define a struct to represent a ray
-
-// Define a function to initialize the raycaster
-
-// Define a function to handle key presses
-
-// Define a function to render the scene
-
-// Define a function to calculate the distance to the nearest wall
-
-//
-float playerX, playerY;
-
+//'D' short for delta, and corresponding to the angle between the direction the player 
+float playerX, playerY, playerDx, playerDy, playerAngle;
 #endif
