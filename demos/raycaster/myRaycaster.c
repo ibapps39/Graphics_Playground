@@ -1,5 +1,16 @@
 #include "myRaycaster.h"
 
+int map[] = {
+    1,1,1,1,1,1,1,1, 
+    1,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,1,
+    1,0,0,0,0,0,0,1,
+    1,1,1,1,1,1,1,1
+};
+
 
 /*
 Setup the lib and init
@@ -43,40 +54,42 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     //glfwSwapInterval(1);
 }
 
-void drawMap() {
-    int x, y, x_offset, y_offset;
+// This function is responsible for drawing the map using OpenGL.
+// It iterates through each cell in the 2D map and draws either a white or a black rectangle
+// based on the cell value (1 for white, 0 for black).
+void drawMap()
+{
+    int x, y;
+    int scaledX, scaledY;
+    //see additionalDoc.md
+    int linearIndex;
+
+    // Iterate through each row (y-axis) of the map
     for (y = 0; y < MAP_HEIGHT; y++)
     {
-        for (x = 0; x < MAP_LENGTH; x++) 
+        // Iterate through each column (x-axis) of the map
+        for (x = 0; x < MAP_LENGTH; x++)
         {
-            if (map[y*MAP_LENGTH+x] == 1)
-            {
-                glColor3f(1,1,1);   
-            } else 
-                {
-                    glColor3f(0,0,0);
-                }
-                /* x_offset = x * MAP_AREA; y_offset = y * MAP_AREA;
-                Calculate the position of each wall segment in the scene, relative to the player position
-                The x_offset and y_offset variables are used to determine the starting position of each wall segment 
-                in the x and y directions, respectively
-                The offset variables are needed to ensure that each wall segment is correctly aligned with each other and 
-                with the player
-                If the offset variables aren't included, all the wall segments would be drawn at the same position in the scene, 
-                which would make the scene look incorrect and distorted*/
-            x_offset = x * MAP_AREA;
-            y_offset = y * MAP_AREA;
+            // Convert 2D coordinates to a 1D index
+            // Set the color for the current cell based on its value in the map array
+            // If the value is 1, set the color to white (1, 1, 1); otherwise, set it to black (0, 0, 0)
+            linearIndex = y * MAP_HEIGHT + x;
+            map[linearIndex] == 1 ? glColor3f(1, 1, 1) : glColor3f(0, 0, 0);
+
+            // Calculate the scaled screen coordinates for the current cell
+            scaledX = x * MAP_AREA;
+            scaledY = y * MAP_AREA;
+
+            // Draw a rectangle (quad) for the current cell using the scaled screen coordinates
             glBegin(GL_QUADS);
-                //+/- 1 to offset dor line between wall segments
-                //lower left, upper left, upper right, lower right
-                glVertex2i(x_offset+1, y_offset+1);
-                glVertex2i(x_offset+1, y_offset+MAP_AREA-1);
-                glVertex2i(x_offset+MAP_AREA-1, y_offset+MAP_AREA-1);
-                glVertex2i(x_offset+MAP_AREA-1, y_offset+1);
+                glVertex2i(scaledX + 1, scaledY + 1);                            // Top-left vertex
+                glVertex2i(scaledX + 1, scaledY + MAP_AREA - 1);                // Bottom-left vertex
+                glVertex2i(scaledX + MAP_AREA - 1, scaledY + MAP_AREA - 1);     // Bottom-right vertex
+                glVertex2i(scaledX + MAP_AREA - 1, scaledY + 1);                // Top-right vertex
             glEnd();
         }
     }
-}
+} 
 
 void drawPlayer()
 {
